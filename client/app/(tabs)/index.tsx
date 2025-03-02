@@ -1,4 +1,5 @@
 import { PressableText } from '@/components/pressable-text'
+import { router } from 'expo-router'
 import { SafeAreaView, Text } from 'react-native'
 
 export default function HomeScreen() {
@@ -10,7 +11,7 @@ export default function HomeScreen() {
         size="large"
         variant="fill"
         onPress={() => {
-          console.log('버튼 클릭')
+          router.push('/auth')
         }}
       >
         버튼

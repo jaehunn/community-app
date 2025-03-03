@@ -1,6 +1,12 @@
-import SecureStore from 'expo-secure-store'
+import * as SecureStore from 'expo-secure-store'
 
-export async function getSecureStore(key: string) {
+export const secureStoreKeys = {
+  accessToken: 'accessToken',
+} as const
+
+type SecureStoreKey = keyof typeof secureStoreKeys
+
+export async function getSecureStore(key: SecureStoreKey) {
   try {
     const result = await SecureStore.getItemAsync(key)
 
@@ -14,7 +20,7 @@ export async function getSecureStore(key: string) {
   }
 }
 
-export async function setSecureStore(key: string, value: string) {
+export async function setSecureStore(key: SecureStoreKey, value: string) {
   try {
     await SecureStore.setItemAsync(key, value)
   } catch (err) {
@@ -22,7 +28,7 @@ export async function setSecureStore(key: string, value: string) {
   }
 }
 
-export async function deleteSecureStore(key: string) {
+export async function deleteSecureStore(key: SecureStoreKey) {
   try {
     await SecureStore.deleteItemAsync(key)
   } catch (err) {

@@ -4,6 +4,7 @@ import { EmailInput } from '@/components/widgets/email-input'
 import { PasswordInput } from '@/components/widgets/password-input'
 import { PasswordConfirmInput } from '@/components/widgets/password-confirm-input'
 import { FixedBottomCta } from '@/components/widgets/fixed-bottom-cta'
+import { useSignup } from '@/queries/use-signup.mutation'
 
 type FormValues = {
   email: string
@@ -12,6 +13,8 @@ type FormValues = {
 }
 
 export default function SignupScreen() {
+  const { mutate: signup } = useSignup()
+
   const signupForm = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -21,7 +24,14 @@ export default function SignupScreen() {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
-    console.log('formValues', formValues)
+    signup(formValues, {
+      onSuccess: () => {
+        console.log('tesitng')
+      },
+      onError: (error) => {
+        console.log(error)
+      },
+    })
   }
 
   return (

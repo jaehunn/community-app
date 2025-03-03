@@ -3,6 +3,7 @@ import { FixedBottomCta } from '@/components/widgets/fixed-bottom-cta'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { EmailInput } from '@/components/widgets/email-input'
 import { PasswordInput } from '@/components/widgets/password-input'
+import { useLogin } from '@/queries/use-login.mutation'
 
 type FormValues = {
   email: string
@@ -10,7 +11,8 @@ type FormValues = {
 }
 
 export default function LoginScreen() {
-  // const insets = useSafeAreaInsets()
+  const { mutate: login } = useLogin()
+
   const loginForm = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -19,7 +21,7 @@ export default function LoginScreen() {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
-    console.log('formValues', formValues)
+    login(formValues)
   }
 
   return (

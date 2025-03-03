@@ -12,7 +12,7 @@ interface Props extends PropsWithChildren<ComponentProps<typeof Pressable>> {
  * variant 에 대한 스타일을 분리해낼 수 있을지.
  */
 
-function PressableText({ children, size, variant, onPress, ...props }: Props) {
+export function PressableText({ children, size, variant, onPress, ...props }: Props) {
   const handlePress = useCallback(
     (event: GestureResponderEvent) => {
       onPress?.(event)
@@ -77,5 +77,3 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
 })
-
-export { PressableText }

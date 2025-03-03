@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native'
 import { PressableText } from '../pressable-text'
 import { colors } from '@/constants/colors.constant'
 import { ComponentProps, PropsWithChildren } from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type PressableTextProps = ComponentProps<typeof PressableText>
 
@@ -10,8 +11,10 @@ interface Props extends Pick<PressableTextProps, 'onPress'> {
 }
 
 export function FixedBottomCta({ children, ...props }: PropsWithChildren<Props>) {
+  const insets = useSafeAreaInsets()
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { bottom: insets.bottom }]}>
       <PressableText size="large" variant="fill" {...props}>
         {children}
       </PressableText>

@@ -1,5 +1,5 @@
 import { colors } from '@/constants/colors.constant'
-import { ComponentProps } from 'react'
+import { ComponentProps, forwardRef } from 'react'
 import { Text, TextInput, View } from 'react-native'
 
 import { StyleSheet } from 'react-native'
@@ -7,19 +7,40 @@ import { StyleSheet } from 'react-native'
 interface Props extends ComponentProps<typeof TextInput> {
   label?: string
   variant: 'fill' | 'standard' | 'outline'
+  error?: string
 }
 
-export function InputField({ label, variant, ...props }: Props) {
+export const InputField = forwardRef<TextInput, Props>(function InputField(
+  { label, variant, error, ...props },
+  forwardedRef
+) {
   return (
     <View>
       {label && <Text style={styles.label}>{label}</Text>}
 
-      <View style={[styles.container, styles[variant]]}>
-        <TextInput placeholderTextColor={colors.gray500} style={styles.input} {...props} />
+      <View
+        style={[
+          styles.container,
+          styles[variant],
+          // ...
+          Boolean(error) ? styles.inputError : null,
+        ]}
+      >
+        <TextInput
+          ref={forwardedRef}
+          autoCapitalize="none"
+          spellCheck={false}
+          autoCorrect={false}
+          placeholderTextColor={colors.gray500}
+          style={styles.input}
+          {...props}
+        />
       </View>
+
+      {Boolean(error) && <Text style={styles.error}>{error}</Text>}
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -51,5 +72,16 @@ const styles = StyleSheet.create({
   },
   outline: {
     // ...
+  },
+
+  // error
+  error: {
+    fontSize: 12,
+    marginTop: 5,
+    color: colors.red500,
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: colors.red500,
   },
 })

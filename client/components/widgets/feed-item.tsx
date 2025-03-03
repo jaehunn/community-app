@@ -4,6 +4,7 @@ import { colors } from '@/constants/colors.constant'
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import { useState } from 'react'
 import { Post } from '@/types/post.type'
+import { Profile } from './profile'
 
 interface Props {
   item: Post
@@ -15,6 +16,14 @@ export function FeedItem({ item }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
+        <Profile
+          imageUri={item.author.imageUri}
+          nickname={item.author.nickname}
+          createdAt={item.createdAt}
+          onPress={() => {
+            // ...
+          }}
+        />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.content} numberOfLines={3}>
           {item.description}

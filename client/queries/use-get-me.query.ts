@@ -1,24 +1,28 @@
 import { getMe } from '@/apis/get-me.get'
-import { headers, removeHeader } from '@/utils/header.util'
-import { deleteSecureStore, secureStoreKeys } from '@/utils/secure-store.util'
+import { headers, removeHeader, setHeader } from '@/utils/header.util'
+import { deleteSecureStore, getSecureStore, secureStoreKeys, setSecureStore } from '@/utils/secure-store.util'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { queryKeys } from './keys'
 
 export function useGetMe() {
-  const { data, isError } = useQuery({
+  const { data, isError, isSuccess } = useQuery({
     queryKey: [queryKeys.auth, 'get-me'],
     queryFn: getMe,
     select: (data) => data?.data ?? null,
   })
 
-  /**
-   * (NOBRIDGE) LOG  {"data": undefined, "isError": false, "isLoading": true}
-   * (NOBRIDGE) LOG  {"me": undefined}
-   *
-   * (NOBRIDGE) LOG  {"data": undefined, "isError": true, "isLoading": false}
-   * (NOBRIDGE) LOG  {"me": undefined}
-   */
+  useEffect(() => {
+    ;(async () => {
+      if (isSuccess) {
+        // 앱을 껐다 키더라도 secureStore 에는 토큰이 남아있다.
+        const accessToken = await getSecureStore(secureStoreKeys.accessToken)
+
+        // getMe() 호출 후 auth header 설정
+        setHeader(headers.Authorization, `Bearer ${accessToken}`)
+      }
+    })()
+  }, [isSuccess])
 
   useEffect(() => {
     if (isError) {

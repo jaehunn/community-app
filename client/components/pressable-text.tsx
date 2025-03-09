@@ -4,7 +4,7 @@ import { GestureResponderEvent, Pressable, PressableProps, StyleSheet, Text } fr
 
 interface Props extends PropsWithChildren<ComponentProps<typeof Pressable>> {
   size: 'small' | 'medium' | 'large'
-  variant: 'fill' | 'outline'
+  variant: 'standard' | 'fill' | 'outline'
 }
 
 /**
@@ -67,6 +67,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.white,
+  },
+  standard: {
+    backgroundColor: colors.orange600,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colors.orange600,
   },
   outline: {
     // ...

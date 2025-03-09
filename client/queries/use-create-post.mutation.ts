@@ -1,0 +1,15 @@
+import { router } from 'expo-router'
+import { useMutation } from '@tanstack/react-query'
+import { createPost } from '@/apis/create-post.post'
+
+export function useCreatePost() {
+  return useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      router.replace('/')
+    },
+    onError: () => {
+      // ...
+    },
+  })
+}

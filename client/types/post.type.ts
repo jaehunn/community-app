@@ -43,4 +43,4 @@ interface PostComment extends Comment {
   replies: Comment[]
 }
 
-export type { Post, CreatePostDto, PostVote, PostVoteOption, PostComment }
+export type { Post, CreatePostDto, PostVote, PostVoteOption, PostComment, ImageUri }

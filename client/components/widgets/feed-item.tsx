@@ -64,7 +64,16 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
                     (index) => {
                       switch (index) {
                         case ACTION_SHEET_OPTIONS.indexOf('삭제'):
-                          deletePost({ postId: item.id })
+                          deletePost(
+                            { postId: item.id },
+                            {
+                              onSuccess: () => {
+                                if (isFeedDetailScreen) {
+                                  router.back()
+                                }
+                              },
+                            }
+                          )
 
                           break
                         case ACTION_SHEET_OPTIONS.indexOf('수정'):

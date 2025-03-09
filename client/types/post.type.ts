@@ -1,3 +1,4 @@
+import { Comment } from './comment.type'
 import { User } from './user.type'
 import { VoteOption } from './vote.type'
 

@@ -14,4 +14,4 @@ interface CreateCommentDto {
   parentCommentId?: number
 }
 
-export type { Comment }
+export type { CreateCommentDto, Comment }

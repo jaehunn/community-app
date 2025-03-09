@@ -5,15 +5,20 @@ import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import { Post } from '@/types/post.type'
 import { Profile } from './profile'
 import { useGetMe } from '@/queries/use-get-me.query'
+import { useActionSheet } from '@expo/react-native-action-sheet'
 
 interface Props {
   item: Post
 }
 
+const ACTION_SHEET_OPTIONS = ['삭제', '수정', '취소'] as const
+
 export function FeedItem({ item }: Props) {
   const { data: user } = useGetMe()
   const likeUsers = item.likes.map((like) => like.userId)
   const isLiked = user?.id != null ? likeUsers.includes(user.id) : false
+
+  const { showActionSheetWithOptions } = useActionSheet()
 
   const isMyFeed = user?.id === item.author.id
 
@@ -34,7 +39,31 @@ export function FeedItem({ item }: Props) {
                 size={24}
                 color={colors.black}
                 onPress={() => {
+                  // @see https://reactnative.dev/docs/actionsheetios
                   // @see https://www.npmjs.com/package/@expo/react-native-action-sheet
+
+                  showActionSheetWithOptions(
+                    {
+                      options: ACTION_SHEET_OPTIONS,
+                      destructiveButtonIndex: ACTION_SHEET_OPTIONS.indexOf('삭제'),
+                      cancelButtonIndex: ACTION_SHEET_OPTIONS.indexOf('취소'),
+                    },
+                    (index) => {
+                      switch (index) {
+                        case ACTION_SHEET_OPTIONS.indexOf('삭제'):
+                          // ...
+                          break
+                        case ACTION_SHEET_OPTIONS.indexOf('수정'):
+                          // ...
+                          break
+                        case ACTION_SHEET_OPTIONS.indexOf('취소'):
+                          // ...
+                          break
+                        default:
+                          break
+                      }
+                    }
+                  )
                 }}
               />
             ) : null

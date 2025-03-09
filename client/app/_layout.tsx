@@ -7,6 +7,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { PropsWithChildren, useEffect } from 'react'
 import 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -27,10 +28,12 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider>
-      <Router />
-      <Toast />
-    </QueryClientProvider>
+    <ActionSheetProvider>
+      <QueryClientProvider>
+        <Router />
+        <Toast />
+      </QueryClientProvider>
+    </ActionSheetProvider>
   )
 }
 

@@ -9,7 +9,7 @@ export function useLogout() {
     logout: () => {
       removeHeader(headers.Authorization)
       deleteSecureStore(secureStoreKeys.accessToken)
-      queryClient.resetQueries({ queryKey: queryKeys.auth })
+      queryClient.resetQueries({ queryKey: [queryKeys.auth] })
     },
   }
 }

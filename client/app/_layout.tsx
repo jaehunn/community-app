@@ -6,6 +6,7 @@ import { router, Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { PropsWithChildren, useEffect } from 'react'
 import 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -28,6 +29,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider>
       <Router />
+      <Toast />
     </QueryClientProvider>
   )
 }
@@ -36,6 +38,18 @@ export default function RootLayout() {
  * Route 마다 렌더링되지 않음.
  */
 function Router() {
+  const { data: me } = useGetMe()
+
+  useEffect(() => {
+    if (me?.nickname != null) {
+      Toast.show({
+        type: 'success',
+        text1: `${me.nickname || '회원'}님, 환영합니다.`,
+        position: 'bottom',
+      })
+    }
+  }, [me?.id])
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -51,11 +65,11 @@ function Router() {
 export function PrivateRoute({ children }: PropsWithChildren<unknown>) {
   const { data: me } = useGetMe()
 
-  console.log('layout', me)
-
   useEffect(() => {
     if (me?.id == null) {
       router.replace('/auth')
+
+      return
     }
   }, [me?.id])
 

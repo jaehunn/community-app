@@ -1,3 +1,3 @@
 export const queryKeys = {
-  auth: ['auth'],
+  auth: 'auth',
 } as const

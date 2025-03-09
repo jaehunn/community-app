@@ -24,6 +24,9 @@ export const InputField = forwardRef<TextInput, Props>(function InputField(
           styles[variant],
           // ...
           Boolean(error) ? styles.inputError : null,
+
+          // ...
+          props.multiline ? styles.multiline : null,
         ]}
       >
         <TextInput
@@ -83,5 +86,13 @@ const styles = StyleSheet.create({
   inputError: {
     borderWidth: 1,
     borderColor: colors.red500,
+  },
+
+  // multiline
+  multiline: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    paddingVertical: 10,
+    height: 200,
   },
 })

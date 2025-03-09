@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { colors } from '@/constants/colors.constant'
-import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import { Post } from '@/types/post.type'
 import { Profile } from './profile'
 import { useGetMe } from '@/queries/use-get-me.query'
@@ -15,6 +15,8 @@ export function FeedItem({ item }: Props) {
   const likeUsers = item.likes.map((like) => like.userId)
   const isLiked = user?.id != null ? likeUsers.includes(user.id) : false
 
+  const isMyFeed = user?.id === item.author.id
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -25,6 +27,18 @@ export function FeedItem({ item }: Props) {
           onPress={() => {
             // ...
           }}
+          option={
+            isMyFeed ? (
+              <Ionicons
+                name="ellipsis-vertical"
+                size={24}
+                color={colors.black}
+                onPress={() => {
+                  // @see https://www.npmjs.com/package/@expo/react-native-action-sheet
+                }}
+              />
+            ) : null
+          }
         />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.content} numberOfLines={3}>

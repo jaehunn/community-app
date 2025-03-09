@@ -2,6 +2,8 @@ import { colors } from '@/constants/colors.constant'
 import React, { ReactNode } from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 
+import dayjs from '@/utils/dayjs'
+
 interface Props {
   nickname: string
   imageUri?: string
@@ -20,7 +22,7 @@ export function Profile({ imageUri, nickname, createdAt, option, onPress }: Prop
         />
         <View style={styles.infoContainer}>
           <Text style={styles.nickname}>{nickname}</Text>
-          <Text style={styles.createdAt}>{createdAt}</Text>
+          <Text style={styles.createdAt}>{dayjs(createdAt).fromNow()}</Text>
         </View>
       </Pressable>
       {option}

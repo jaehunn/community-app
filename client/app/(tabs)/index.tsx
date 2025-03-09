@@ -13,8 +13,6 @@ export default function HomeScreen() {
    *   (NOBRIDGE) LOG  {"background": null, "bottomId": null, "email": "jack@example.com", "faceId": null, "handId": null, "hatId": null, "id": 1, "imageUri": null, "introduce": null, "nickname": "익명1", "skinId": "01", "topId": null}
    */
 
-  console.log(me)
-
   return (
     <SafeAreaView>
       <FeedList />

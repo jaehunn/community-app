@@ -3,9 +3,14 @@ import { headers, removeHeader } from '@/utils/header.util'
 import { deleteSecureStore, secureStoreKeys } from '@/utils/secure-store.util'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
+import { queryKeys } from './keys'
 
 export function useGetMe() {
-  const { data, isError } = useQuery({ queryKey: ['get-me'], queryFn: getMe, select: (data) => data?.data ?? null })
+  const { data, isError } = useQuery({
+    queryKey: [queryKeys.auth, 'get-me'],
+    queryFn: getMe,
+    select: (data) => data?.data ?? null,
+  })
 
   /**
    * (NOBRIDGE) LOG  {"data": undefined, "isError": false, "isLoading": true}

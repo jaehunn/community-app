@@ -4,13 +4,13 @@ export const headers = {
   Authorization: 'Authorization',
 } as const
 
-type HeaderKey = keyof typeof headers
+type HeadersType = keyof typeof headers
 
-export function setHeader(key: HeaderKey, value: string) {
+export function setHeader(key: HeadersType, value: string) {
   headers[key] = value
 }
 
-export function removeHeader(key: HeaderKey) {
+export function removeHeader(key: HeadersType) {
   if (http.defaults.headers.common[key] != null) {
     return
   }

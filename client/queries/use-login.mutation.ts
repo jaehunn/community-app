@@ -13,8 +13,8 @@ export function useLogin() {
 
       router.push('/')
     },
-    onError: () => {
-      // ...
+    onError: (error) => {
+      console.log('error', error)
     },
   })
 }

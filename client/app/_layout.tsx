@@ -1,8 +1,10 @@
 import { QueryClientProvider } from '@/providers/query-client.provider'
+import { useGetMe } from '@/queries/use-get-me.query'
+import React from 'react'
 import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react'
+import { PropsWithChildren, useEffect } from 'react'
 import 'react-native-reanimated'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -44,4 +46,18 @@ function Router() {
       <Stack.Screen name="+not-found" />
     </Stack>
   )
+}
+
+export function PrivateRoute({ children }: PropsWithChildren<unknown>) {
+  const { data: me } = useGetMe()
+
+  console.log('layout', me)
+
+  useEffect(() => {
+    if (me?.id == null) {
+      router.replace('/auth')
+    }
+  }, [me?.id])
+
+  return <>{children}</>
 }

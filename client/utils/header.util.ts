@@ -7,7 +7,7 @@ export const headers = {
 type HeadersType = keyof typeof headers
 
 export function setHeader(key: HeadersType, value: string) {
-  headers[key] = value
+  http.defaults.headers.common[key] = value
 }
 
 export function removeHeader(key: HeadersType) {
@@ -18,6 +18,6 @@ export function removeHeader(key: HeadersType) {
   delete http.defaults.headers.common[key]
 }
 
-export function getHeader(key: HeaderKey) {
+export function getHeader(key: HeadersType) {
   return http.defaults.headers.common[key] ?? null
 }

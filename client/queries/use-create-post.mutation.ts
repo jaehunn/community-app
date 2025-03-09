@@ -7,6 +7,8 @@ export function useCreatePost() {
     mutationFn: createPost,
     onSuccess: () => {
       router.replace('/')
+
+      // stale time 설정했으면, invalidate 필요.
     },
     onError: () => {
       // ...

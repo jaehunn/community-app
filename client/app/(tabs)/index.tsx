@@ -12,8 +12,9 @@ export default function HomeScreen() {
   const isAuthenticated = me?.id != null
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <FeedList />
+
       {isAuthenticated && (
         <PressableText
           size="medium"
@@ -29,6 +30,10 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
   writeButton: {
     position: 'absolute',
     bottom: 16,

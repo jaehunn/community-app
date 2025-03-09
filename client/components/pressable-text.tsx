@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   standard: {
-    backgroundColor: colors.orange600,
+    backgroundColor: colors.white,
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.orange600,

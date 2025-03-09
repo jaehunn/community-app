@@ -2,16 +2,18 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { colors } from '@/constants/colors.constant'
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
-import { useState } from 'react'
 import { Post } from '@/types/post.type'
 import { Profile } from './profile'
+import { useGetMe } from '@/queries/use-get-me.query'
 
 interface Props {
   item: Post
 }
 
 export function FeedItem({ item }: Props) {
-  const [isLiked, setIsLiked] = useState(false)
+  const { data: user } = useGetMe()
+  const likeUsers = item.likes.map((like) => like.userId)
+  const isLiked = user?.id != null ? likeUsers.includes(user.id) : false
 
   return (
     <View style={styles.container}>
@@ -30,7 +32,12 @@ export function FeedItem({ item }: Props) {
         </Text>
       </View>
       <View style={styles.menuContainer}>
-        <Pressable style={styles.menu} onPress={() => setIsLiked(!isLiked)}>
+        <Pressable
+          style={styles.menu}
+          onPress={() => {
+            // TODO: 좋아요 추가
+          }}
+        >
           <Octicons
             name={isLiked ? 'heart-fill' : 'heart'}
             size={16}

@@ -1,12 +1,13 @@
 import { PressableText } from '@/components/pressable-text'
 import { DescriptionInput } from '@/components/widgets/description-input'
 import { TitleInput } from '@/components/widgets/title-input'
-import { useCreatePost } from '@/queries/use-create-post.mutation'
+import { useGetPost } from '@/queries/use-get-post.query'
+import { useUpdatePost } from '@/queries/use-update-post.mutation'
 import { ImageUri } from '@/types/post.type'
-import { router, useNavigation } from 'expo-router'
+import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { Button, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 type FormValues = {
@@ -17,23 +18,30 @@ type FormValues = {
   imageUris: ImageUri[]
 }
 
-export default function PostWriteScreen() {
+export default function PostEditScreen() {
   const navigation = useNavigation()
+
+  /** @see https://docs.expo.dev/versions/latest/sdk/router/#uselocalsearchparams */
+  const { id } = useLocalSearchParams()
+  const { data: post } = useGetPost({ id: Number(id) })
   const postWriteForm = useForm<FormValues>({
+    // stale-time 을 설정했다면, 초기 로드 이후 defaultValues 로 기본값 설정이 가능하다.
+    // 단, 초기 로드 시에는 기본값이 비어있다.
+
+    /** *비동기 값을 defaultValues + reset() 로 설정하는 것과 values 로 설정하는 것의 차이. */
     defaultValues: {
       title: '',
       description: '',
-
-      // TODO:
       imageUris: [],
     },
   })
-  const { mutate: createPost } = useCreatePost()
+
+  const { mutate: updatePost } = useUpdatePost()
 
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
-    createPost(formValues, {
+    updatePost([{ id: Number(id) }, formValues], {
       onSuccess: () => {
-        router.replace('/')
+        router.back()
       },
     })
   }
@@ -51,11 +59,18 @@ export default function PostWriteScreen() {
     })
   }, [])
 
+  useEffect(() => {
+    if (post?.data != null) {
+      postWriteForm.reset({
+        title: post.data.title,
+        description: post.data.description,
+        imageUris: post.data.imageUris,
+      })
+    }
+  }, [postWriteForm.reset, post?.data])
+
   return (
     <FormProvider {...postWriteForm}>
-      {/* ScrollView, @see https://reactnative.dev/docs/scrollview */}
-      {/* ScrollView 로 진행해도, 인풋이 많아지면 키패드가 마지막 인풋을 가린다. */}
-      {/* react-native-keyboard-aware-scroll-view */}
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <TitleInput />
         <DescriptionInput />

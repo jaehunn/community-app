@@ -6,6 +6,8 @@ import { Post } from '@/types/post.type'
 import { Profile } from './profile'
 import { useGetMe } from '@/queries/use-get-me.query'
 import { useActionSheet } from '@expo/react-native-action-sheet'
+import { useDeletePost } from '@/queries/use-delete-post.mutation'
+import { router } from 'expo-router'
 
 interface Props {
   item: Post
@@ -19,6 +21,7 @@ export function FeedItem({ item }: Props) {
   const isLiked = user?.id != null ? likeUsers.includes(user.id) : false
 
   const { showActionSheetWithOptions } = useActionSheet()
+  const { mutate: deletePost } = useDeletePost()
 
   const isMyFeed = user?.id === item.author.id
 
@@ -44,17 +47,19 @@ export function FeedItem({ item }: Props) {
 
                   showActionSheetWithOptions(
                     {
-                      options: ACTION_SHEET_OPTIONS,
+                      options: [...ACTION_SHEET_OPTIONS],
                       destructiveButtonIndex: ACTION_SHEET_OPTIONS.indexOf('삭제'),
                       cancelButtonIndex: ACTION_SHEET_OPTIONS.indexOf('취소'),
                     },
                     (index) => {
                       switch (index) {
                         case ACTION_SHEET_OPTIONS.indexOf('삭제'):
-                          // ...
+                          deletePost({ postId: item.id })
+
                           break
                         case ACTION_SHEET_OPTIONS.indexOf('수정'):
-                          // ...
+                          router.push(`/post/edit/${item.id}`)
+
                           break
                         case ACTION_SHEET_OPTIONS.indexOf('취소'):
                           // ...

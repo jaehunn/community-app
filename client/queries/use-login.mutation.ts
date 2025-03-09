@@ -2,7 +2,6 @@ import { login } from '@/apis/login.post'
 import { headers, setHeader } from '@/utils/header.util'
 import { secureStoreKeys, setSecureStore } from '@/utils/secure-store.util'
 import { useMutation } from '@tanstack/react-query'
-import { router } from 'expo-router'
 
 export function useLogin() {
   return useMutation({
@@ -12,8 +11,6 @@ export function useLogin() {
       // 인가를 제대로 처리하지 못함. -> useGetMe() onSuccess 시에 헤더를 설정하도록 수정.
       setHeader(headers.Authorization, `Bearer ${data.accessToken}`)
       await setSecureStore(secureStoreKeys.accessToken, data.accessToken)
-
-      router.push('/')
     },
     onError: (error) => {
       console.log('error', error)

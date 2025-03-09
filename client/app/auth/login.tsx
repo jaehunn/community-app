@@ -4,6 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { EmailInput } from '@/components/widgets/email-input'
 import { PasswordInput } from '@/components/widgets/password-input'
 import { useLogin } from '@/queries/use-login.mutation'
+import { router } from 'expo-router'
 
 type FormValues = {
   email: string
@@ -21,7 +22,11 @@ export default function LoginScreen() {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
-    login(formValues)
+    login(formValues, {
+      onSuccess: () => {
+        router.replace('/')
+      },
+    })
   }
 
   return (

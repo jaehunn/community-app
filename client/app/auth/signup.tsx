@@ -5,6 +5,7 @@ import { PasswordInput } from '@/components/widgets/password-input'
 import { PasswordConfirmInput } from '@/components/widgets/password-confirm-input'
 import { FixedBottomCta } from '@/components/widgets/fixed-bottom-cta'
 import { useSignup } from '@/queries/use-signup.mutation'
+import { router } from 'expo-router'
 
 type FormValues = {
   email: string
@@ -26,7 +27,7 @@ export default function SignupScreen() {
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
     signup(formValues, {
       onSuccess: () => {
-        console.log('tesitng')
+        router.replace('/auth/login')
       },
       onError: (error) => {
         console.log(error)

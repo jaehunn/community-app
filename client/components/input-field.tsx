@@ -8,10 +8,11 @@ interface Props extends ComponentProps<typeof TextInput> {
   label?: string
   variant: 'fill' | 'standard' | 'outline'
   error?: string
+  rightSlot?: React.ReactNode
 }
 
 export const InputField = forwardRef<TextInput, Props>(function InputField(
-  { label, variant, error, ...props },
+  { label, variant, error, rightSlot: RightSlot, ...props },
   forwardedRef
 ) {
   return (
@@ -38,6 +39,8 @@ export const InputField = forwardRef<TextInput, Props>(function InputField(
           style={styles.input}
           {...props}
         />
+
+        {RightSlot}
       </View>
 
       {Boolean(error) && <Text style={styles.error}>{error}</Text>}

@@ -1,6 +1,7 @@
 import { colors } from '@/constants/colors.constant'
 import { Feather } from '@expo/vector-icons'
-import { Link, router, Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
+import { Pressable } from 'react-native'
 
 export default function PostLayout() {
   return (
@@ -13,14 +14,28 @@ export default function PostLayout() {
       }}
     >
       <Stack.Screen
-        name="write"
+        // write/index 로 잡아야 타이틀 정상적으로 설정가능.
+        name="write/index"
         options={{
-          title: '글쓰기',
+          headerTitle: '글쓰기',
           headerShown: true,
           headerLeft: () => (
-            <Link replace href="/">
-              <Feather name="arrow-left" size={28} color="black" />
-            </Link>
+            <Pressable onPress={() => router.replace('/')}>
+              <Feather name="arrow-left" size={28} color={colors.black} />
+            </Pressable>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="[id]/index"
+        options={{
+          headerTitle: '게시글',
+          headerShown: true,
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <Feather name="arrow-left" size={28} color={colors.black} />
+            </Pressable>
           ),
         }}
       />
@@ -28,19 +43,12 @@ export default function PostLayout() {
       <Stack.Screen
         name="edit/[id]"
         options={{
-          title: '글수정',
+          headerTitle: '글수정',
           headerShown: true,
           headerLeft: () => (
-            <Link replace href="/">
-              <Feather
-                name="arrow-left"
-                size={28}
-                color="black"
-                onPress={() => {
-                  router.back()
-                }}
-              />
-            </Link>
+            <Pressable onPress={() => router.back()}>
+              <Feather name="arrow-left" size={28} color={colors.black} />
+            </Pressable>
           ),
         }}
       />

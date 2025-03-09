@@ -11,11 +11,12 @@ import { router } from 'expo-router'
 
 interface Props {
   item: Post
+  isFeedDetailScreen?: boolean
 }
 
 const ACTION_SHEET_OPTIONS = ['삭제', '수정', '취소'] as const
 
-export function FeedItem({ item }: Props) {
+export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
   const { data: user } = useGetMe()
   const likeUsers = item.likes.map((like) => like.userId)
   const isLiked = user?.id != null ? likeUsers.includes(user.id) : false
@@ -25,8 +26,17 @@ export function FeedItem({ item }: Props) {
 
   const isMyFeed = user?.id === item.author.id
 
+  const Container = isFeedDetailScreen ? View : Pressable
+
   return (
-    <View style={styles.container}>
+    <Container
+      style={styles.container}
+      onPress={() => {
+        if (!isFeedDetailScreen) {
+          router.push(`/post/${item.id}`)
+        }
+      }}
+    >
       <View style={styles.contentContainer}>
         <Profile
           imageUri={item.author.imageUri}
@@ -102,13 +112,13 @@ export function FeedItem({ item }: Props) {
           <Text style={styles.menuText}>{item.viewCount}</Text>
         </Pressable>
       </View>
-    </View>
+    </Container>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: colors.white,
+    backgroundColor: colors.white,
   },
   contentContainer: {
     padding: 16,

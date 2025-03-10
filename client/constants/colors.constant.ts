@@ -9,6 +9,7 @@ const colors = {
   orange600: '#ff6b57',
 
   // gray
+  gray50: '#fcfcfc',
   gray100: '#f6f6f6',
   gray200: '#e2e8f0',
   gray300: '#d1d5db',

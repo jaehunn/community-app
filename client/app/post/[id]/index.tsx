@@ -7,8 +7,8 @@ import { colors } from '@/constants/colors.constant'
 import { useCreateComment } from '@/queries/use-create-comment.mutation'
 import { useGetPost } from '@/queries/use-get-post.query'
 import { useLocalSearchParams } from 'expo-router'
-import { useRef, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { Keyboard, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function PostDetailScreen() {
@@ -18,6 +18,8 @@ export default function PostDetailScreen() {
   const { mutate: createComment } = useCreateComment()
   const [content, setContent] = useState('')
   const scrollViewRef = useRef<ScrollView | null>(null)
+  const inputFieldRef = useRef<TextInput | null>(null)
+  const [parentCommentId, setParentCommentId] = useState<number | null>(null)
 
   if (isPending || isError) {
     return null
@@ -35,16 +37,36 @@ export default function PostDetailScreen() {
             </View>
 
             {post.data.comments?.map((comment) => {
-              return <CommentItem key={comment.id} item={comment} />
+              return (
+                <>
+                  <CommentItem
+                    key={comment.id}
+                    item={comment}
+                    parentCommentId={parentCommentId}
+                    onPressInputReplyButton={() => {
+                      setParentCommentId(comment.id)
+                      inputFieldRef.current?.focus()
+                    }}
+                    onCancelInputReplyButton={() => {
+                      setParentCommentId(null)
+                      Keyboard.dismiss()
+                    }}
+                  />
+                  {comment.replies.map((reply) => {
+                    return <CommentItem isReplyComment key={reply.id} item={reply} />
+                  })}
+                </>
+              )
             })}
           </ScrollView>
 
           {/* Form 으로 분리할 수 있을 듯. */}
           <View style={styles.inputContainer}>
             <InputField
+              ref={inputFieldRef}
               variant="fill"
               returnKeyType="send"
-              placeholder="댓글을 남겨보세요."
+              placeholder={parentCommentId !== null ? '답글을 남기는 중...' : '댓글을 남겨보세요.'}
               value={content}
               onChangeText={(text) => setContent(text)}
               rightSlot={
@@ -58,6 +80,9 @@ export default function PostDetailScreen() {
                       {
                         content,
                         postId: post.data.id,
+
+                        // 대댓글
+                        parentCommentId: parentCommentId ?? undefined,
                       },
                       {
                         onSuccess: () => {
@@ -70,6 +95,11 @@ export default function PostDetailScreen() {
                           setTimeout(() => {
                             scrollViewRef.current?.scrollToEnd()
                           }, 300)
+
+                          if (parentCommentId !== null) {
+                            setParentCommentId(null)
+                            Keyboard.dismiss()
+                          }
                         },
                       }
                     )

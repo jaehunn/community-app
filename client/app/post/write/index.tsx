@@ -1,5 +1,6 @@
 import { PressableText } from '@/components/pressable-text'
 import { DescriptionInput } from '@/components/widgets/description-input'
+import { PostWriteFooter } from '@/components/widgets/post-write-footer'
 import { TitleInput } from '@/components/widgets/title-input'
 import { useCreatePost } from '@/queries/use-create-post.mutation'
 import { ImageUri } from '@/types/post.type'
@@ -60,6 +61,8 @@ export default function PostWriteScreen() {
         <TitleInput />
         <DescriptionInput />
       </KeyboardAwareScrollView>
+
+      <PostWriteFooter />
     </FormProvider>
   )
 }

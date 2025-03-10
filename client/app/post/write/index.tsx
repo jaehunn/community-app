@@ -1,5 +1,6 @@
 import { PressableText } from '@/components/pressable-text'
 import { DescriptionInput } from '@/components/widgets/description-input'
+import { ImagePreviewList } from '@/components/widgets/image-preview-list'
 import { PostWriteFooter } from '@/components/widgets/post-write-footer'
 import { TitleInput } from '@/components/widgets/title-input'
 import { useCreatePost } from '@/queries/use-create-post.mutation'
@@ -7,10 +8,10 @@ import { ImageUri } from '@/types/post.type'
 import { router, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { Button, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-type FormValues = {
+export type PostWriteFormValues = {
   title: string
   description: string
 
@@ -20,18 +21,16 @@ type FormValues = {
 
 export default function PostWriteScreen() {
   const navigation = useNavigation()
-  const postWriteForm = useForm<FormValues>({
+  const postWriteForm = useForm<PostWriteFormValues>({
     defaultValues: {
       title: '',
       description: '',
-
-      // TODO:
       imageUris: [],
     },
   })
   const { mutate: createPost } = useCreatePost()
 
-  const onSubmit: SubmitHandler<FormValues> = (formValues) => {
+  const onSubmit: SubmitHandler<PostWriteFormValues> = (formValues) => {
     createPost(formValues, {
       onSuccess: () => {
         router.replace('/')
@@ -52,6 +51,8 @@ export default function PostWriteScreen() {
     })
   }, [])
 
+  const imageUris = postWriteForm.watch('imageUris')
+
   return (
     <FormProvider {...postWriteForm}>
       {/* ScrollView, @see https://reactnative.dev/docs/scrollview */}
@@ -60,6 +61,7 @@ export default function PostWriteScreen() {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <TitleInput />
         <DescriptionInput />
+        <ImagePreviewList imageUris={imageUris} />
       </KeyboardAwareScrollView>
 
       <PostWriteFooter />

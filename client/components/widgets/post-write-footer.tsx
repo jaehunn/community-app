@@ -1,16 +1,32 @@
 import { colors } from '@/constants/colors.constant'
-import { StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import { PressableText } from '../pressable-text'
 import { Ionicons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import { useUploadImages } from '@/queries/use-upload-images.mutation'
 import { createFormData } from '@/utils/image.util'
-
+import { useFormContext } from 'react-hook-form'
+import { PostWriteFormValues } from '@/app/post/write'
+import { ImageUri } from '@/types/post.type'
 export function PostWriteFooter() {
+  const formContext = useFormContext<PostWriteFormValues>()
   const inset = useSafeAreaInsets()
 
   const { mutate: uploadImages } = useUploadImages()
+
+  // 기본은 중복을 허용하는 상태.
+  const addImageUris = (imageUris: ImageUri[]) => {
+    // limits
+    if (formContext.getValues('imageUris').length + imageUris.length > 5) {
+      Alert.alert('이미지는 최대 5개까지 추가할 수 있습니다.')
+
+      return
+    }
+
+    // getValues() vs. watch()
+    formContext.setValue('imageUris', [...formContext.getValues('imageUris'), ...imageUris])
+  }
 
   const handlePressImagePicker = async () => {
     /** @see https://docs.expo.dev/versions/latest/sdk/imagepicker/ */
@@ -23,15 +39,16 @@ export function PostWriteFooter() {
       return
     }
 
-    const assetUris = result.assets.map((asset) => asset.uri)
-    const formData = createFormData(assetUris)
+    const formData = createFormData(result.assets)
 
     uploadImages(formData, {
       onSuccess: (data) => {
-        console.log(data)
+        const imageUris = data.data.map((uri) => ({ uri }))
+
+        addImageUris(imageUris)
       },
       onError: (error) => {
-        console.error(error)
+        // console.error(error)
       },
     })
   }

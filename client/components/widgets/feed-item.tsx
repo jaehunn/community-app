@@ -8,6 +8,7 @@ import { useGetMe } from '@/queries/use-get-me.query'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useDeletePost } from '@/queries/use-delete-post.mutation'
 import { router } from 'expo-router'
+import { ImagePreviewList } from './image-preview-list'
 
 interface Props {
   item: Post
@@ -97,6 +98,7 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
         <Text style={styles.content} numberOfLines={3}>
           {item.description}
         </Text>
+        <ImagePreviewList imageUris={item.imageUris} />
       </View>
       <View style={styles.menuContainer}>
         <Pressable
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 16,
+    gap: 8,
   },
   title: {
     fontSize: 18,

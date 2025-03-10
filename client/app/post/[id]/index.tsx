@@ -38,9 +38,8 @@ export default function PostDetailScreen() {
 
             {post.data.comments?.map((comment) => {
               return (
-                <>
+                <React.Fragment key={comment.id}>
                   <CommentItem
-                    key={comment.id}
                     item={comment}
                     parentCommentId={parentCommentId}
                     onPressInputReplyButton={() => {
@@ -52,10 +51,11 @@ export default function PostDetailScreen() {
                       Keyboard.dismiss()
                     }}
                   />
+
                   {comment.replies.map((reply) => {
-                    return <CommentItem isReplyComment key={reply.id} item={reply} />
+                    return <CommentItem isReplyComment item={reply} />
                   })}
-                </>
+                </React.Fragment>
               )
             })}
           </ScrollView>

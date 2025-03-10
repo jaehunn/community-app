@@ -1,11 +1,14 @@
-export function createFormData(uris: string[], mimeType = 'image/jpeg') {
+import { ImagePickerAsset } from 'expo-image-picker'
+
+export function createFormData(assets: ImagePickerAsset[]) {
   const formData = new FormData()
 
-  uris.forEach((uri) => {
+  assets.forEach(({ uri, mimeType }) => {
     formData.append('images', {
       // name 추출
       name: uri.split('/').pop(),
-      type: mimeType,
+
+      type: mimeType ?? 'image/jpeg',
       uri,
     } as unknown as Blob)
   })

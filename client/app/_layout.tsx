@@ -63,6 +63,9 @@ function Router() {
       {/* Post Route */}
       <Stack.Screen name="post" options={{ headerShown: false }} />
 
+      {/* Image Route */}
+      <Stack.Screen name="image" options={{ headerShown: false }} />
+
       <Stack.Screen name="+not-found" />
     </Stack>
   )

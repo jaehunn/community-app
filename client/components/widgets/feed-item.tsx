@@ -10,6 +10,8 @@ import { useDeletePost } from '@/queries/use-delete-post.mutation'
 import { router } from 'expo-router'
 import { ImagePreviewList } from './image-preview-list'
 import { Vote } from './vote'
+import auth from '@/app/auth'
+import { useCreateLikePost } from '@/queries/use-create-like-post.mutation'
 
 interface Props {
   item: Post
@@ -25,6 +27,25 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
 
   const { showActionSheetWithOptions } = useActionSheet()
   const { mutate: deletePost } = useDeletePost()
+  const { mutate: createLikePost } = useCreateLikePost()
+
+  const handlePressLike = () => {
+    if (auth == null) {
+      router.push('/auth')
+
+      return
+    }
+
+    if (!isFeedDetailScreen) {
+      router.push(`/post/${item.id}`)
+    }
+
+    createLikePost({ postId: item.id })
+  }
+
+  const handlePressFeed = () => {
+    //
+  }
 
   const isMyFeed = user?.id === item.author.id
 
@@ -122,12 +143,7 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
       </View>
 
       <View style={styles.menuContainer}>
-        <Pressable
-          style={styles.menu}
-          onPress={() => {
-            // TODO: 좋아요 추가
-          }}
-        >
+        <Pressable style={styles.menu} onPress={handlePressLike}>
           <Octicons
             name={isLiked ? 'heart-fill' : 'heart'}
             size={16}
@@ -135,11 +151,11 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
           />
           <Text style={isLiked ? styles.activeMenuText : styles.menuText}>{item.likes.length}</Text>
         </Pressable>
-        <Pressable style={styles.menu}>
+        <Pressable style={styles.menu} onPress={handlePressFeed}>
           <MaterialCommunityIcons name="comment-processing-outline" size={16} color={colors.black} />
           <Text style={styles.menuText}>{item.commentCount}</Text>
         </Pressable>
-        <Pressable style={styles.menu}>
+        <Pressable style={styles.menu} onPress={handlePressFeed}>
           <Octicons name="eye" size={16} color={colors.black} />
           <Text style={styles.menuText}>{item.viewCount}</Text>
         </Pressable>

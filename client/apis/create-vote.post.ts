@@ -5,6 +5,6 @@ type Params = {
   optionId: number
 }
 
-export function createVote({ postId, optionId }: Params) {
+export async function createVote({ postId, optionId }: Params) {
   return http.post<number>(`/posts/${postId}/vote/${optionId}`)
 }

@@ -2,9 +2,12 @@ import { PressableText } from '@/components/pressable-text'
 import { DescriptionInput } from '@/components/widgets/description-input'
 import { ImagePreviewList } from '@/components/widgets/image-preview-list'
 import { PostWriteFooter } from '@/components/widgets/post-write-footer'
+import { RegisteredVote } from '@/components/widgets/registered-vote'
 import { TitleInput } from '@/components/widgets/title-input'
+import { VoteModal } from '@/components/widgets/vote-modal'
 import { useCreatePost } from '@/queries/use-create-post.mutation'
 import { ImageUri } from '@/types/post.type'
+import { VoteOption } from '@/types/vote.type'
 import { router, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
@@ -14,9 +17,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export type PostWriteFormValues = {
   title: string
   description: string
-
-  // TOOD:
   imageUris: ImageUri[]
+  isOpenVoteModal: boolean
+  voteOptions: VoteOption[]
+  isVoteRegistered: boolean
 }
 
 export default function PostWriteScreen() {
@@ -26,6 +30,9 @@ export default function PostWriteScreen() {
       title: '',
       description: '',
       imageUris: [],
+      isOpenVoteModal: false,
+      voteOptions: [{ displayPriority: 0, content: '' }],
+      isVoteRegistered: false,
     },
   })
   const { mutate: createPost } = useCreatePost()
@@ -61,10 +68,13 @@ export default function PostWriteScreen() {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <TitleInput />
         <DescriptionInput />
+        <RegisteredVote />
         <ImagePreviewList imageUris={imageUris} />
       </KeyboardAwareScrollView>
 
       <PostWriteFooter />
+
+      <VoteModal />
     </FormProvider>
   )
 }

@@ -36,7 +36,7 @@ export const InputField = forwardRef<TextInput, Props>(function InputField(
           spellCheck={false}
           autoCorrect={false}
           placeholderTextColor={colors.gray500}
-          style={styles.input}
+          style={[styles.input, styles[`${variant}Text`]]}
           {...props}
         />
 
@@ -74,10 +74,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray100,
   },
   standard: {
-    // ...
+    borderWidth: 1,
+    borderColor: colors.gray200,
   },
   outline: {
-    // ...
+    borderWidth: 1,
+    borderColor: colors.orange600,
   },
 
   // error
@@ -97,5 +99,17 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: 10,
     height: 200,
+  },
+
+  // variantText
+  fillText: {
+    color: colors.black,
+  },
+  standardText: {
+    color: colors.black,
+  },
+  outlineText: {
+    color: colors.orange600,
+    fontWeight: 'bold',
   },
 })

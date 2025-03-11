@@ -1,7 +1,7 @@
 import { colors } from '@/constants/colors.constant'
 import { Alert, StyleSheet, View } from 'react-native'
 import { PressableText } from '../pressable-text'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import { useUploadImages } from '@/queries/use-upload-images.mutation'
@@ -53,15 +53,23 @@ export function PostWriteFooter() {
     })
   }
 
+  const handlePressVoteIcon = () => {
+    formContext.setValue('isOpenVoteModal', true)
+  }
+
   return (
     <View style={[styles.container, { paddingBottom: inset.bottom }]}>
       <PressableText
         variant="standard"
         size="medium"
-        style={styles.footerIconContainer}
+        style={styles.cameraIconContainer}
         onPress={handlePressImagePicker}
       >
         <Ionicons name="camera" size={20} color={colors.black} />
+      </PressableText>
+
+      <PressableText variant="standard" size="medium" style={styles.voteIconContainer} onPress={handlePressVoteIcon}>
+        <MaterialCommunityIcons name="vote" size={20} color={colors.black} />
       </PressableText>
     </View>
   )
@@ -80,7 +88,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
-  footerIconContainer: {
+  cameraIconContainer: {
+    backgroundColor: colors.gray100,
+    padding: 10,
+    borderRadius: 5,
+  },
+  voteIconContainer: {
     backgroundColor: colors.gray100,
     padding: 10,
     borderRadius: 5,

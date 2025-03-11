@@ -1,9 +1,10 @@
 import { PressableText } from '@/components/pressable-text'
 import { DescriptionInput } from '@/components/widgets/description-input'
+import { RegisteredVote } from '@/components/widgets/registered-vote'
 import { TitleInput } from '@/components/widgets/title-input'
 import { useGetPost } from '@/queries/use-get-post.query'
 import { useUpdatePost } from '@/queries/use-update-post.mutation'
-import { ImageUri } from '@/types/post.type'
+import { ImageUri, VoteOption } from '@/types/post.type'
 import { router, useLocalSearchParams, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
@@ -13,9 +14,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 type FormValues = {
   title: string
   description: string
-
-  // TOOD:
   imageUris: ImageUri[]
+  isVoteRegistered: boolean
 }
 
 export default function PostEditScreen() {
@@ -33,6 +33,7 @@ export default function PostEditScreen() {
       title: '',
       description: '',
       imageUris: [],
+      isVoteRegistered: false,
     },
   })
 
@@ -65,6 +66,7 @@ export default function PostEditScreen() {
         title: post.data.title,
         description: post.data.description,
         imageUris: post.data.imageUris,
+        isVoteRegistered: post.data.hasVote,
       })
     }
   }, [postWriteForm.reset, post?.data])
@@ -74,6 +76,7 @@ export default function PostEditScreen() {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <TitleInput />
         <DescriptionInput />
+        <RegisteredVote />
       </KeyboardAwareScrollView>
     </FormProvider>
   )

@@ -29,11 +29,14 @@ export function PressableText({ children, size, variant, onPress, ...props }: Pr
 
         // pressed style
         pressed ? styles['pressed'] : null,
+
+        // disabled style
+        props.disabled ? styles['disabled'] : null,
       ]}
       onPress={handlePress}
       {...props}
     >
-      <Text style={styles[variant]}>{children}</Text>
+      <Text style={styles[`${variant}Text`]}>{children}</Text>
     </Pressable>
   )
 }
@@ -64,12 +67,16 @@ const styles = StyleSheet.create({
   // variant
   fill: {
     backgroundColor: colors.orange600,
+  },
+  fillText: {
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.white,
   },
   standard: {
     backgroundColor: colors.white,
+  },
+  standardText: {
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.orange600,
@@ -77,9 +84,16 @@ const styles = StyleSheet.create({
   outline: {
     // ...
   },
+  outlineText: {
+    // ...
+  },
 
   // pressed
   pressed: {
     opacity: 0.8,
+  },
+
+  disabled: {
+    backgroundColor: colors.gray300,
   },
 })

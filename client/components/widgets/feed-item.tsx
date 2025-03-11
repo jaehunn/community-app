@@ -9,6 +9,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useDeletePost } from '@/queries/use-delete-post.mutation'
 import { router } from 'expo-router'
 import { ImagePreviewList } from './image-preview-list'
+import { Vote } from './vote'
 
 interface Props {
   item: Post
@@ -99,7 +100,27 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
           {item.description}
         </Text>
         <ImagePreviewList imageUris={item.imageUris} />
+
+        {item.hasVote && (
+          <>
+            {!isFeedDetailScreen ? (
+              /* Vote Feed */
+              <View style={styles.voteContainer}>
+                <View style={styles.voteTitleContainer}>
+                  <MaterialCommunityIcons name="vote" size={24} color={colors.orange600} />
+                  <Text style={styles.voteCountLabel}>투표</Text>
+                </View>
+
+                <Text style={styles.voteCountText}>{item.voteCount}명 참여중 ...</Text>
+              </View>
+            ) : (
+              /* Vote Feed Detail */
+              <Vote postId={item.id} postVotes={item.votes ?? []} voteCount={item.voteCount} />
+            )}
+          </>
+        )}
       </View>
+
       <View style={styles.menuContainer}>
         <Pressable
           style={styles.menu}
@@ -169,5 +190,36 @@ const styles = StyleSheet.create({
   activeMenuText: {
     fontWeight: 500,
     color: colors.orange600,
+  },
+
+  // vote
+  voteContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginVertical: 14,
+    alignItems: 'center',
+    gap: 16,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: colors.orange600,
+    backgroundColor: colors.orange100,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  voteTitleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  voteCountLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colors.orange600,
+  },
+  voteCountText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colors.black,
   },
 })

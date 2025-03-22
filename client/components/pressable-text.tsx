@@ -1,10 +1,11 @@
 import { colors } from '@/constants/colors.constant'
 import { ComponentProps, PropsWithChildren, useCallback } from 'react'
-import { GestureResponderEvent, Pressable, PressableProps, StyleSheet, Text } from 'react-native'
+import { StyleSheet, GestureResponderEvent, Pressable, StyleProp, Text, ViewStyle } from 'react-native'
 
 interface Props extends PropsWithChildren<ComponentProps<typeof Pressable>> {
   size: 'small' | 'medium' | 'large'
   variant: 'standard' | 'fill' | 'outline'
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -12,7 +13,7 @@ interface Props extends PropsWithChildren<ComponentProps<typeof Pressable>> {
  * variant 에 대한 스타일을 분리해낼 수 있을지.
  */
 
-export function PressableText({ children, size, variant, onPress, ...props }: Props) {
+export function PressableText({ children, size, variant, onPress, style, ...props }: Props) {
   const handlePress = useCallback(
     (event: GestureResponderEvent) => {
       onPress?.(event)
@@ -32,6 +33,9 @@ export function PressableText({ children, size, variant, onPress, ...props }: Pr
 
         // disabled style
         props.disabled ? styles['disabled'] : null,
+
+        // inherit style
+        style,
       ]}
       onPress={handlePress}
       {...props}
@@ -57,7 +61,9 @@ const styles = StyleSheet.create({
     //  ...
   },
   medium: {
-    // ...
+    height: 38,
+    alignSelf: 'center', // 넓이를 알아서 맞추도록
+    paddingHorizontal: 12,
   },
   large: {
     width: '100%',
@@ -82,10 +88,14 @@ const styles = StyleSheet.create({
     color: colors.orange600,
   },
   outline: {
-    // ...
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.orange600,
   },
   outlineText: {
-    // ...
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colors.orange600,
   },
 
   // pressed

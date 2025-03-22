@@ -1,20 +1,29 @@
 import { baseUrls } from '@/apis/http'
 import { PrivateRoute } from '@/app/_layout'
 import { PressableText } from '@/components/pressable-text'
+import { LikedFeedList } from '@/components/widgets/liked-feed-list'
+import { MyFeedList } from '@/components/widgets/my-feed-list'
 import { Tab } from '@/components/widgets/tab'
 import { colors } from '@/constants/colors.constant'
 import { useGetMe } from '@/queries/use-get-me.query'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Image, Platform, StyleSheet, Text, View } from 'react-native'
+import PagerView from 'react-native-pager-view'
 
 const AVATAR_SIZE = 154
 
-export default function MyScreen() {
-  const { data: me } = useGetMe()
-  const [selectedTab, setSelectedTab] = useState<0 | 1>(0)
+type TabIndexType = 0 | 1
 
-  const handleTabPress = (tab: 0 | 1) => {
-    setSelectedTab(tab)
+export default function MyScreen() {
+  const pagerViewRef = useRef<PagerView | null>(null)
+  const { data: me } = useGetMe()
+  const [selectedTab, setSelectedTab] = useState<TabIndexType>(0)
+
+  const handleTabPress = (tabIndex: TabIndexType) => {
+    setSelectedTab(tabIndex)
+
+    // Swipe 동기화
+    pagerViewRef.current?.setPage(tabIndex)
   }
 
   return (
@@ -51,6 +60,21 @@ export default function MyScreen() {
           좋아한 게시물
         </Tab>
       </View>
+
+      <PagerView
+        ref={pagerViewRef}
+        initialPage={0}
+        style={styles.tabContentContainer}
+        onPageSelected={(event) => {
+          const position = event.nativeEvent.position as TabIndexType
+
+          // Tab 동기화
+          setSelectedTab(position)
+        }}
+      >
+        <MyFeedList key="my-feed-list" />
+        <LikedFeedList key="liked-feed-list" />
+      </PagerView>
     </PrivateRoute>
   )
 }
@@ -99,5 +123,11 @@ const styles = StyleSheet.create({
   tabContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  tabContentContainer: {
+    flex: 1,
+  },
+  tabContent: {
+    flex: 1,
   },
 })

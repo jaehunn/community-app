@@ -6,6 +6,7 @@ import { MyFeedList } from '@/components/widgets/my-feed-list'
 import { Tab } from '@/components/widgets/tab'
 import { colors } from '@/constants/colors.constant'
 import { useGetMe } from '@/queries/use-get-me.query'
+import { router } from 'expo-router'
 import { useRef, useState } from 'react'
 import { Image, Platform, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
@@ -40,7 +41,14 @@ export default function MyScreen() {
           style={styles.avatar}
         />
 
-        <PressableText variant="outline" size="medium" style={styles.profileEditButton}>
+        <PressableText
+          variant="outline"
+          size="medium"
+          style={styles.profileEditButton}
+          onPress={() => {
+            router.push('/profile/edit')
+          }}
+        >
           프로필 편집
         </PressableText>
       </View>

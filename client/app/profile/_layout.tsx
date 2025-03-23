@@ -35,6 +35,28 @@ export default function ProfileLayout() {
           },
         }}
       />
+
+      <Stack.Screen
+        name="edit"
+        options={{
+          headerShown: true,
+          headerTitle: '프로필 수정',
+
+          // remove Back Title
+          headerBackButtonDisplayMode: 'minimal',
+
+          // remove line
+          headerShadowVisible: false,
+
+          headerLeft: () => {
+            return (
+              <Pressable onPress={() => router.back()}>
+                <Feather name="arrow-left" size={28} color={colors.black} />
+              </Pressable>
+            )
+          },
+        }}
+      />
     </Stack>
   )
 }

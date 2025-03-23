@@ -7,8 +7,8 @@ type Params = {
 
 type Response = Post[]
 
-export async function getPosts(params: Params) {
-  return http.get<Response>('/posts', {
+export async function getLikesPosts(params: Params) {
+  return http.get<Response>('/posts/likes', {
     params,
   })
 }

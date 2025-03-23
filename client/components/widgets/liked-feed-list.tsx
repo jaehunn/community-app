@@ -1,11 +1,11 @@
 import { FlatList, StyleSheet } from 'react-native'
 import React, { useMemo, useRef, useState } from 'react'
 import { FeedItem } from './feed-item'
-import { useGetPosts } from '@/queries/use-get-posts.query'
 import { useScrollToTop } from '@react-navigation/native'
+import { useGetLikedPosts } from '@/queries/use-get-liked-posts.query'
 
 export function LikedFeedList() {
-  const { data: postsData, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetPosts()
+  const { data: postsData, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetLikedPosts()
   const [shouldRefresh, setShouldRefresh] = useState(false)
 
   const flatListRef = useRef<FlatList | null>(null)

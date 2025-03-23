@@ -66,6 +66,9 @@ function Router() {
       {/* Image Route */}
       <Stack.Screen name="image" options={{ headerShown: false }} />
 
+      {/* Profile Route */}
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
+
       <Stack.Screen name="+not-found" />
     </Stack>
   )

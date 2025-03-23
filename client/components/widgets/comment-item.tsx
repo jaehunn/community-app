@@ -9,6 +9,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useDeleteComment } from '@/queries/use-delete-comment.mutation'
 import { PressableText } from '../pressable-text'
 import { useRef, useState } from 'react'
+import { router } from 'expo-router'
 
 interface Props {
   item: Comment
@@ -57,7 +58,7 @@ export function CommentItem({
           nickname={item.isDeleted ? '삭제된 댓글' : item.user.nickname}
           createdAt={item.createdAt}
           onPress={() => {
-            // ...
+            router.push(`/profile/${item.user.id}`)
           }}
           option={
             !item.isDeleted && isMyComment ? (

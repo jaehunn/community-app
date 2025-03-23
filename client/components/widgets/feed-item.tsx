@@ -66,7 +66,7 @@ export function FeedItem({ item, isFeedDetailScreen = false }: Props) {
           nickname={item.author.nickname}
           createdAt={item.createdAt}
           onPress={() => {
-            // ...
+            router.push(`/profile/${item.author.id}`)
           }}
           option={
             isMyFeed ? (

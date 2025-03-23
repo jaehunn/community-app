@@ -3,11 +3,11 @@ import { PropsWithChildren } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 interface Props extends PropsWithChildren {
-  isActive: boolean
+  isActive?: boolean
   onPress?: () => void
 }
 
-export function Tab({ children, isActive, onPress }: Props) {
+export function Tab({ children, isActive = false, onPress }: Props) {
   function handlePress() {
     onPress?.()
   }

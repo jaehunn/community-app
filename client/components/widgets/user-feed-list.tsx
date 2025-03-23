@@ -1,11 +1,17 @@
-import { FlatList, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useMemo, useRef, useState } from 'react'
 import { FeedItem } from './feed-item'
+import { useGetUserPosts } from '@/queries/use-get-user-posts.query'
 import { useScrollToTop } from '@react-navigation/native'
-import { useGetMyPosts } from '@/queries/use-get-my-posts.query'
+import { colors } from '@/constants/colors.constant'
 
-export function MyFeedList() {
-  const { data: postsData, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetMyPosts()
+interface Props {
+  id: string
+}
+
+export function UserFeedList({ id }: Props) {
+  const { data: postsData, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetUserPosts({ id })
+
   const [shouldRefresh, setShouldRefresh] = useState(false)
 
   const flatListRef = useRef<FlatList | null>(null)
@@ -45,10 +51,21 @@ export function MyFeedList() {
         await refetch()
         setShouldRefresh(false)
       }}
+      // @see https://reactnative.dev/docs/flatlist#listemptycomponent
+      ListEmptyComponent={
+        <View style={styles.emptyContainer}>
+          <Text>작성한 글이 없습니다.</Text>
+        </View>
+      }
     />
   )
 }
 
 const styles = StyleSheet.create({
-  // ...
+  emptyContainer: {
+    backgroundColor: colors.white,
+    padding: 16,
+    display: 'flex',
+    alignItems: 'center',
+  },
 })

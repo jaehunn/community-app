@@ -2,9 +2,10 @@ import { PressableText } from '@/components/pressable-text'
 import { FeedList } from '@/components/widgets/feed-list'
 import { useGetMe } from '@/queries/use-get-me.query'
 import { router } from 'expo-router'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { Image, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '@/constants/colors.constant'
+import SearchInput from '@/components/widgets/search-input'
 
 export default function HomeScreen() {
   const { data: me } = useGetMe()
@@ -13,6 +14,10 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
+        <SearchInput readOnly placeholder="글 제목 검색" onPress={() => router.push('/post/search')} />
+      </View>
       <FeedList />
 
       {isAuthenticated && (
@@ -32,6 +37,20 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  inputContainer: {
+    marginBottom: 8,
+    paddingHorizontal: 16,
+    gap: 8,
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+
+    /** @see https://reactnative.dev/docs/statusbar */
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  logo: {
+    height: 44,
+    width: 44,
   },
 
   writeButton: {

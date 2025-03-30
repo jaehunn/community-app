@@ -52,6 +52,12 @@ export default function PostLayout() {
           ),
         }}
       />
+      <Stack.Screen
+        name="search/index"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   )
 }

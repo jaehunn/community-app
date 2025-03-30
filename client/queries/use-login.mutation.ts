@@ -2,6 +2,8 @@ import { login } from '@/apis/login.post'
 import { headers, setHeader } from '@/utils/header.util'
 import { secureStoreKeys, setSecureStore } from '@/utils/secure-store.util'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
+import Toast from 'react-native-toast-message'
 
 export function useLogin() {
   return useMutation({
@@ -13,7 +15,10 @@ export function useLogin() {
       await setSecureStore(secureStoreKeys.accessToken, data.accessToken)
     },
     onError: (error) => {
-      console.log('error', error)
+      Toast.show({
+        type: 'error',
+        text1: (error as AxiosError<{ message: string }>)?.response?.data.message,
+      })
     },
   })
 }

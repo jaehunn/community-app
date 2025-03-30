@@ -40,7 +40,3 @@ app-example
 
 # server
 server
-
-# firebase
-community-*.json
-google-services.json

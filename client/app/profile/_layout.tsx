@@ -14,11 +14,10 @@ export default function ProfileLayout() {
       }}
     >
       <Stack.Screen
-        // dynamic path (유저 ID)
-        name="[id]"
+        name="edit"
         options={{
           headerShown: true,
-          headerTitle: '',
+          headerTitle: '프로필 수정',
 
           // remove Back Title
           headerBackButtonDisplayMode: 'minimal',
@@ -37,10 +36,33 @@ export default function ProfileLayout() {
       />
 
       <Stack.Screen
-        name="edit"
+        name="avatar"
         options={{
           headerShown: true,
-          headerTitle: '프로필 수정',
+          headerTitle: '프로필 이미지 변경',
+
+          // remove Back Title
+          headerBackButtonDisplayMode: 'minimal',
+
+          // remove line
+          headerShadowVisible: false,
+
+          headerLeft: () => {
+            return (
+              <Pressable onPress={() => router.back()}>
+                <Feather name="arrow-left" size={28} color={colors.black} />
+              </Pressable>
+            )
+          },
+        }}
+      />
+
+      <Stack.Screen
+        // dynamic path (유저 ID)
+        name="[id]"
+        options={{
+          headerShown: true,
+          headerTitle: '',
 
           // remove Back Title
           headerBackButtonDisplayMode: 'minimal',

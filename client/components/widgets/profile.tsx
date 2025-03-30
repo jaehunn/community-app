@@ -1,8 +1,9 @@
 import { colors } from '@/constants/colors.constant'
 import React, { ReactNode } from 'react'
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 
 import dayjs from '@/utils/dayjs'
+import { baseUrls } from '@/apis/http'
 
 interface Props {
   nickname: string
@@ -17,7 +18,11 @@ export function Profile({ imageUri, nickname, createdAt, option, onPress }: Prop
     <View style={styles.container}>
       <Pressable style={styles.profileContainer} onPress={onPress}>
         <Image
-          source={imageUri ? { uri: imageUri } : require('@/assets/images/default-avatar.png')}
+          source={
+            imageUri
+              ? { uri: `${Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android}/${imageUri}` }
+              : require('@/assets/images/default-avatar.png')
+          }
           style={styles.avatar}
         />
         <View style={styles.infoContainer}>

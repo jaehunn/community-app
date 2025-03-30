@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    backgroundColor: colors.white,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.gray300,
     paddingTop: 12,

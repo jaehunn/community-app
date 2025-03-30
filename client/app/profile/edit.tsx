@@ -31,6 +31,7 @@ export default function ProfileEditScreen() {
   const { mutate: updateProfile } = useUpdateProfile()
 
   const submitValid: SubmitHandler<FormValues> = (values) => {
+    // TODO: 프로필 업데이트 안되는 이슈 해결 필요.
     updateProfile(values, {
       onSuccess: () => {
         Toast.show({
@@ -53,27 +54,26 @@ export default function ProfileEditScreen() {
                 : require('@/assets/images/default-avatar.png')
             }
           />
+
+          <PressableText
+            size="medium"
+            variant="outline"
+            style={styles.profileEditButton}
+            onPress={() => {
+              router.push('/profile/avatar')
+            }}
+          >
+            프로필 이미지 변경
+          </PressableText>
         </View>
+
+        <View style={styles.formContainer}>
+          <NicknameInput />
+          <IntroduceInput />
+        </View>
+
+        <FixedBottomCta onPress={editForm.handleSubmit(submitValid)}>저장</FixedBottomCta>
       </View>
-
-      <PressableText
-        size="medium"
-        variant="outline"
-        style={styles.profileEditButton}
-        onPress={() => {
-          // TODO:
-          router.push('/profile/edit/image')
-        }}
-      >
-        프로필 이미지 변경
-      </PressableText>
-
-      <View style={styles.formContainer}>
-        <NicknameInput />
-        <IntroduceInput />
-      </View>
-
-      <FixedBottomCta onPress={editForm.handleSubmit(submitValid)}>저장</FixedBottomCta>
     </FormProvider>
   )
 }
@@ -89,10 +89,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    margin: 16,
+    marginTop: 16,
   },
   avatar: {
-    position: 'absolute',
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
     borderRadius: AVATAR_SIZE,

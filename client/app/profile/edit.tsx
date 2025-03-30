@@ -31,7 +31,6 @@ export default function ProfileEditScreen() {
   const { mutate: updateProfile } = useUpdateProfile()
 
   const submitValid: SubmitHandler<FormValues> = (values) => {
-    // TODO: 프로필 업데이트 안되는 이슈 해결 필요.
     updateProfile(values, {
       onSuccess: () => {
         Toast.show({

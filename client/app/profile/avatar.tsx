@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Platform, StyleSheet, Text, View } from 'react-native'
 import { useGetAvatarItems } from '@/queries/use-get-avatar-items.queries'
 import { Tab } from '@/components/widgets/tab'
 import { Fragment, useEffect, useRef, useState } from 'react'
@@ -11,6 +11,8 @@ import { colors } from '@/constants/colors.constant'
 import { useUpdateProfile } from '@/queries/use-update-profile.mutation'
 import Toast from 'react-native-toast-message'
 import { AvatarItemType } from '@/apis/update-profile.patch'
+import Svg, { SvgUri } from 'react-native-svg'
+import { baseUrls } from '@/apis/http'
 
 const defaultTabIndex = 0
 
@@ -22,12 +24,12 @@ export default function AvatarScreen() {
   const { mutate: updateProfile } = useUpdateProfile()
   const { data: me } = useGetMe()
   const [avatarItems, setAvatarItems] = useState<AvatarItemType>({
-    hatsId: me?.hatId ?? '',
-    facesId: me?.faceId ?? '',
-    topsId: me?.topId ?? '',
-    bottomsId: me?.bottomId ?? '',
-    handsId: me?.handId ?? '',
-    skinsId: me?.skinId ?? '',
+    hatId: me?.hatId ?? '',
+    faceId: me?.faceId ?? '',
+    topId: me?.topId ?? '',
+    bottomId: me?.bottomId ?? '',
+    handId: me?.handId ?? '',
+    skinId: me?.skinId ?? '01',
   })
 
   function extractIdFromPath(path: string) {
@@ -35,6 +37,16 @@ export default function AvatarScreen() {
     const [id] = filename.split('.')
 
     return id
+  }
+
+  function createAvatarUri(type: string, id?: string) {
+    const baseUrl = Platform.OS === 'ios' ? baseUrls.ios : baseUrls.android
+
+    if (type === 'default' || id == null) {
+      return `${baseUrl}/default/frame.svg`
+    }
+
+    return `${baseUrl}/items/${type}/${id}.svg`
   }
 
   function handlePressTab(index: number) {
@@ -68,13 +80,33 @@ export default function AvatarScreen() {
         backgroundColor: colors.orange200,
       },
     })
-  }, [])
+  }, [navigation])
 
   return (
     <Fragment>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <View style={styles.avatarContainer}>{/* ... */}</View>
+          <View style={styles.avatarContainer}>
+            {avatarItems.hatId && (
+              <SvgUri uri={createAvatarUri('hats', avatarItems.hatId)} style={[styles.avatar, { zIndex: 70 }]} />
+            )}
+            {avatarItems.faceId && (
+              <SvgUri uri={createAvatarUri('faces', avatarItems.faceId)} style={[styles.avatar, { zIndex: 60 }]} />
+            )}
+            {avatarItems.topId && (
+              <SvgUri uri={createAvatarUri('tops', avatarItems.topId)} style={[styles.avatar, { zIndex: 50 }]} />
+            )}
+            {avatarItems.bottomId && (
+              <SvgUri uri={createAvatarUri('bottoms', avatarItems.bottomId)} style={[styles.avatar, { zIndex: 40 }]} />
+            )}
+            <SvgUri uri={createAvatarUri('default')} style={[styles.avatar, { zIndex: 30 }]} />
+            {avatarItems.skinId && (
+              <SvgUri uri={createAvatarUri('skins', avatarItems.skinId)} style={[styles.avatar, { zIndex: 20 }]} />
+            )}
+            {avatarItems.handId && (
+              <SvgUri uri={createAvatarUri('hands', avatarItems.handId)} style={[styles.avatar, { zIndex: 10 }]} />
+            )}
+          </View>
         </View>
 
         <View style={styles.tabContainer}>
@@ -103,8 +135,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.hatsId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('hatsId', item)}
+                  isSelected={avatarItems.hatId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('hatId', item)}
                 />
               )
             }}
@@ -118,8 +150,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.facesId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('facesId', item)}
+                  isSelected={avatarItems.faceId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('faceId', item)}
                 />
               )
             }}
@@ -133,8 +165,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.topsId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('topsId', item)}
+                  isSelected={avatarItems.topId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('topId', item)}
                 />
               )
             }}
@@ -148,8 +180,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.bottomsId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('bottomsId', item)}
+                  isSelected={avatarItems.bottomId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('bottomId', item)}
                 />
               )
             }}
@@ -163,8 +195,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.handsId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('handsId', item)}
+                  isSelected={avatarItems.handId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('handId', item)}
                 />
               )
             }}
@@ -178,8 +210,8 @@ export default function AvatarScreen() {
               return (
                 <AvatarItem
                   uri={item}
-                  isSelected={avatarItems.skinsId === extractIdFromPath(item)}
-                  onPress={() => handlePressAvatarItem('skinsId', item)}
+                  isSelected={avatarItems.skinId === extractIdFromPath(item)}
+                  onPress={() => handlePressAvatarItem('skinId', item)}
                 />
               )
             }}
@@ -217,6 +249,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.gray200,
     backgroundColor: colors.white,
+  },
+
+  avatar: {
+    width: 229,
+    height: 229,
+    position: 'absolute',
   },
 
   tabContainer: {

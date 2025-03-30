@@ -7,7 +7,7 @@ type Payload = Partial<
   }
 >
 
-export type AvatarItemType = Record<'hatsId' | 'facesId' | 'topsId' | 'bottomsId' | 'handsId' | 'skinsId', string>
+export type AvatarItemType = Record<'hatId' | 'faceId' | 'topId' | 'bottomId' | 'handId' | 'skinId', string>
 
 export const updateProfile = async (payload: Payload) => {
   return http.patch('/auth/me', payload)

@@ -8,9 +8,19 @@ import { PropsWithChildren, useEffect } from 'react'
 import 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
+import * as Notifications from 'expo-notifications'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+/** @see https://docs.expo.dev/push-notifications/push-notifications-setup/#add-a-minimal-working-example */
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
 
 export default function RootLayout() {
   const [loaded] = useFonts({

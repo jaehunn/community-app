@@ -5,6 +5,7 @@ import { EmailInput } from '@/components/widgets/email-input'
 import { PasswordInput } from '@/components/widgets/password-input'
 import { useLogin } from '@/queries/use-login.mutation'
 import { router } from 'expo-router'
+import usePushNotification from '@/hooks/use-push-notification'
 
 type FormValues = {
   email: string
@@ -13,6 +14,7 @@ type FormValues = {
 
 export default function LoginScreen() {
   const { mutate: login } = useLogin()
+  const { expoPushToken } = usePushNotification()
 
   const loginForm = useForm<FormValues>({
     defaultValues: {
@@ -22,11 +24,17 @@ export default function LoginScreen() {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
-    login(formValues, {
-      onSuccess: () => {
-        router.replace('/')
+    login(
+      {
+        ...formValues,
+        expoPushToken,
       },
-    })
+      {
+        onSuccess: () => {
+          router.replace('/')
+        },
+      }
+    )
   }
 
   return (

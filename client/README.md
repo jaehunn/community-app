@@ -12,3 +12,22 @@ expo secure store
 push token
 
 - https://docs.expo.dev/push-notifications/overview/
+
+```
+npx expo install expo-notifications expo-device expo-constants
+
+```
+
+```
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+```
+
+expo-notifications 는 expo-go 에서는 사용 불가능.
+
+> 빌드해서 사용

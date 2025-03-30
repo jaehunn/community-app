@@ -3,6 +3,8 @@ import { http } from './http'
 type Payload = {
   email: string
   password: string
+
+  expoPushToken?: string
 }
 
 type Response = {

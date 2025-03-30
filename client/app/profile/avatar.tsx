@@ -73,6 +73,10 @@ export default function AvatarScreen() {
   return (
     <Fragment>
       <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.avatarContainer}>{/* ... */}</View>
+        </View>
+
         <View style={styles.tabContainer}>
           {['모자', '얼굴', '상의', '하의', '양손', '피부'].map((tab, index) => {
             return (
@@ -194,6 +198,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
+  // header
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: colors.orange200,
+    height: 115,
+    marginBottom: 115,
+  },
+
+  avatarContainer: {
+    width: 229,
+    height: 229,
+    borderRadius: 229,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.gray200,
+    backgroundColor: colors.white,
+  },
+
   tabContainer: {
     display: 'flex',
     flexDirection: 'row',

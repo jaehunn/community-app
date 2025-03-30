@@ -53,3 +53,6 @@ eas build -p android
 ios
 
 - apple dveloper membership
+-
+
+eas build --profile development

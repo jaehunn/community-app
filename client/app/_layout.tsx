@@ -27,8 +27,10 @@ Notifications.setNotificationHandler({
 })
 
 export default function RootLayout() {
+  // TODO: 왜 ttf 확장자만 가능할까.
+  // TODO: 루트에 적용하기.
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    PretendardVariable: require('../assets/fonts/PretendardVariable.ttf'),
   })
 
   useEffect(() => {

@@ -56,3 +56,17 @@ ios
 -
 
 eas build --profile development
+
+adaptive icon - icon
+splash icon - loading
+
+---
+
+build
+-- google play 등록 필요
+-- apple developer program 등록 필요.
+
+빌드 전 eas 사전 설정 필요.
+dev, prod 빌드 가능
+
+빌드 파일을 app store 에 제출.

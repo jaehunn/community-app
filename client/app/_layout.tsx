@@ -9,6 +9,10 @@ import 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import * as Notifications from 'expo-notifications'
+import i18n, { t } from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import { i18nOptions } from '@/libs/i18n'
+import { getSecureStore } from '@/utils/secure-store.util'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -47,6 +51,8 @@ export default function RootLayout() {
   )
 }
 
+i18n.use(initReactI18next).init(i18nOptions)
+
 /**
  * Route 마다 렌더링되지 않음.
  */
@@ -57,11 +63,21 @@ function Router() {
     if (me?.nickname != null) {
       Toast.show({
         type: 'success',
-        text1: `${me.nickname || '회원'}님, 환영합니다.`,
+        text1: t('Welcome Message', { nickname: me.nickname }),
         position: 'bottom',
       })
     }
   }, [me?.id])
+
+  useEffect(() => {
+    ;(async () => {
+      const language = await getSecureStore('language')
+
+      if (language != null) {
+        i18n.changeLanguage(language)
+      }
+    })()
+  }, [i18n])
 
   return (
     <Stack>

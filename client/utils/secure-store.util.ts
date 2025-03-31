@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store'
 
 export const secureStoreKeys = {
   accessToken: 'accessToken',
+  language: 'language',
 } as const
 
 type SecureStoreKey = keyof typeof secureStoreKeys
